@@ -1,0 +1,5 @@
+# Dependências de desenvolvimento/testes (A19). Instale com:
+#   pip install -r requirements-dev.txt
+# Rode a suíte a partir de Back-End:  python -m pytest
+-r requirements.txt
+pytest

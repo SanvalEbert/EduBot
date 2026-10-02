@@ -1,0 +1,161 @@
+services:
+  ova_mysql:
+    container_name: ova_db
+    build:
+      context: "./Database"
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: "Password-1"
+      MYSQL_USER: "eduardo"
+      MYSQL_PASSWORD: "Password-1"
+      MYSQL_DATABASE: "ova_db"
+    ports:
+      - 3310:3306
+    # Healthcheck (A18): o Flask só deve subir quando o MySQL estiver realmente
+    # aceitando conexões. Sem isto, o backend subia antes do banco e — com o
+    # fallback antigo — caía num SQLite vazio (A4).
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pPassword-1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 20s
+    networks:
+      - ova_network
+
+  ova_flask:
+    container_name: ova_back_end
+    build:
+      context: "./Back-End"
+      dockerfile: Dockerfile
+    environment:
+      # Config do banco lida por env (A4) — casa com Back-End/data/models/base.py
+      DB_HOST: ova_mysql
+      DB_PORT: "3306"
+      DB_NAME: ova_db
+      DB_USER: eduardo
+      DB_PASSWORD: "Password-1"
+      # Segredo para assinar tokens de sessão (A18). Defina EDUBOT_SECRET num
+      # arquivo .env na raiz; sem ele o auth.py usa um default só de dev.
+      EDUBOT_SECRET: ${EDUBOT_SECRET:-dev-secret-change-me}
+      # A.3: origem(ns) permitidas de CORS (o app React servido pelo Apache).
+      # Vírgula separa múltiplas; "*" libera geral (só dev).
+      EDUBOT_CORS_ORIGINS: ${EDUBOT_CORS_ORIGINS:-http://localhost:8010}
+      # Proatividade agendada (A13): varredura periódica da turma. Ligada por
+      # padrão no container; ajuste a cadência via .env (hora diária ou, para
+      # demo, um intervalo em minutos).
+      EDUBOT_SCHEDULER: ${EDUBOT_SCHEDULER:-on}
+      EDUBOT_SCHEDULER_HOUR: ${EDUBOT_SCHEDULER_HOUR:-3}
+      EDUBOT_SCHEDULER_INTERVAL_MINUTES: ${EDUBOT_SCHEDULER_INTERVAL_MINUTES:-}
+      EDUBOT_DEBUG: ${EDUBOT_DEBUG:-0}
+      # IA do EduBot — padrão mockado. Defina estas variáveis num arquivo .env
+      # na raiz do projeto (o compose o carrega automaticamente) para ligar o
+      # Claude real na AWS Bedrock sem tocar no código.
+      EDUBOT_LLM_PROVIDER: ${EDUBOT_LLM_PROVIDER:-mock}
+      EDUBOT_LLM_MODEL: ${EDUBOT_LLM_MODEL:-claude-sonnet-4-6}
+      EDUBOT_LLM_MAX_TOKENS: ${EDUBOT_LLM_MAX_TOKENS:-1024}
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
+      # Bedrock API key (bearer token) — o SDK anthropic a lê como api_key.
+      AWS_BEARER_TOKEN_BEDROCK: ${AWS_BEARER_TOKEN_BEDROCK:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      # Coach (fala do EduBot): usa a MESMA camada de provider (llm.py) dos
+      # outros agentes — Fase 3d unificou o caminho, sem boto3 paralelo. Só muda
+      # o modelo (mais barato) via override. Sem provider real => texto local.
+      EDUBOT_COACH_MODEL: ${EDUBOT_COACH_MODEL:-claude-haiku-4-5-20251001}
+      EDUBOT_COACH_MAX_TOKENS: ${EDUBOT_COACH_MAX_TOKENS:-220}
+      # B.2/B.4 — guarda de orçamento diário, redator por caso e circuit breaker.
+      # (O compose só repassa o que está listado aqui: sem estas linhas, os
+      # valores do .env NÃO chegam ao container.)
+      EDUBOT_DAILY_BUDGET_USD: ${EDUBOT_DAILY_BUDGET_USD:-1.00}
+      EDUBOT_REDACTOR_MODEL: ${EDUBOT_REDACTOR_MODEL:-}
+      EDUBOT_REDACTOR_MAX_TOKENS: ${EDUBOT_REDACTOR_MAX_TOKENS:-250}
+      EDUBOT_LLM_BREAKER_THRESHOLD: ${EDUBOT_LLM_BREAKER_THRESHOLD:-3}
+      EDUBOT_LLM_BREAKER_COOLDOWN: ${EDUBOT_LLM_BREAKER_COOLDOWN:-600}
+      # V.1 — voz (AWS Polly). "auto" tenta o Polly e cai no Web Speech; "off"
+      # força o fallback sem tentar a rede.
+      EDUBOT_SPEECH: ${EDUBOT_SPEECH:-auto}
+      EDUBOT_SPEECH_CACHE_DIR: ${EDUBOT_SPEECH_CACHE_DIR:-./speech_cache}
+      EDUBOT_POLLY_VOICE_PT: ${EDUBOT_POLLY_VOICE_PT:-Camila}
+      EDUBOT_POLLY_VOICE_EN: ${EDUBOT_POLLY_VOICE_EN:-Joanna}
+      # Etapa 8 (Plano 2) — gamificação. "off" desliga a camada inteira (award/
+      # register viram no-op; o front esconde a UI). Curva de nível e tamanho do
+      # ranking ajustáveis.
+      EDUBOT_GAMIFICATION: ${EDUBOT_GAMIFICATION:-on}
+      EDUBOT_XP_LEVEL_BASE: ${EDUBOT_XP_LEVEL_BASE:-60}
+      EDUBOT_LEADERBOARD_SIZE: ${EDUBOT_LEADERBOARD_SIZE:-10}
+      # Etapa 11 (Plano 3) — companheiro de estudo no leitor de OVA. "off" faz o
+      # leitor não montar o widget (idêntico ao atual). Exposto em /student/me.
+      EDUBOT_COMPANION: ${EDUBOT_COMPANION:-on}
+      # INTEGRACAO EXTERNA (migration_021) - API publica /api/v1 para parceiros.
+      # O salt pseudonimiza o aluno para quem consome de fora: o parceiro recebe
+      # um subject_id estavel e opaco no lugar do student_id. SEM valor definido
+      # o pseudonimo ainda e' estavel, mas qualquer um que conheca o esquema o
+      # deriva - defina em producao, como o EDUBOT_SECRET. Trocar o salt rotaciona
+      # todos os pseudonimos de uma vez.
+      EDUBOT_PSEUDONYM_SALT: ${EDUBOT_PSEUDONYM_SALT:-}
+      # Teto por chave de parceiro (nao e' anti-DDoS; e' o freio que impede um
+      # parceiro com loop errado de varrer a base inteira sem parar).
+      EDUBOT_APIKEY_RATE_LIMIT: ${EDUBOT_APIKEY_RATE_LIMIT:-120}
+      EDUBOT_APIKEY_RATE_WINDOW: ${EDUBOT_APIKEY_RATE_WINDOW:-60}
+      # Coleta do edubot-tracker.js (POST /api/v1/collect). Origens liberadas no
+      # CORS ("*" = qualquer site, inclusive file://) e teto por chave de coleta
+      # - maior que o de leitura: um material aberto pela turma toda usa UMA chave.
+      EDUBOT_COLLECT_ORIGINS: ${EDUBOT_COLLECT_ORIGINS:-*}
+      EDUBOT_COLLECT_RATE_LIMIT: ${EDUBOT_COLLECT_RATE_LIMIT:-600}
+    ports:
+      - 5010:8090
+    volumes:
+      - ./Back-End:/api
+    depends_on:
+      ova_mysql:
+        condition: service_healthy
+    networks:
+      - ova_network
+
+  # Compila o frontend React (Lovable) sem exigir Node instalado na máquina:
+  # roda npm install + vite build dentro de um container e emite o resultado
+  # em Front-End/files/app, que o Apache serve em http://localhost:8010/app/
+  ova_react_build:
+    container_name: ova_react_build
+    image: node:20-alpine
+    working_dir: /src
+    environment:
+      VITE_OUT_DIR: /out
+    volumes:
+      - ./Front-End/react-logic-demo:/src
+      - ./Front-End/files/app:/out
+    command: sh -c "npm install && npm run build"
+    networks:
+      - ova_network
+
+  ova_apache:
+    container_name: ova_front_end
+    build:
+      context: "./Front-End"
+      dockerfile: Dockerfile
+    ports:
+      - 8010:80
+    volumes:
+      - ./Front-End/files:/usr/local/apache2/htdocs/
+    depends_on:
+      ova_flask:
+        condition: service_started
+      ova_react_build:
+        condition: service_completed_successfully
+    networks:
+      - ova_network
+
+networks:
+  ova_network:
+    name: ova_network
+    driver: bridge
+    ipam:
+      config:
+        # Sub-rede privada RFC1918 (A18). A anterior (172.168.30.0/29) estava em
+        # espaço público e só tinha 6 endereços, forçando IPs fixos por serviço.
+        # Aqui os serviços se resolvem por nome de container (ova_mysql etc.),
+        # então basta uma /24 privada sem IPs fixos.
+        - subnet: 172.28.0.0/24

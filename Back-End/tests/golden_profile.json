@@ -1,0 +1,185 @@
+{
+  "atividades_pendentes": 1,
+  "competencias": [
+    {
+      "acertos": 1,
+      "competency_id": 1,
+      "dominio_estimado": null,
+      "erros": 2,
+      "nome": "Comp A",
+      "status": "em desenvolvimento",
+      "subject_id": 1,
+      "subject_nome": "Assunto",
+      "taxa_erro": 0.67,
+      "tentativas": 3,
+      "total_questoes": 2
+    },
+    {
+      "acertos": 1,
+      "competency_id": 2,
+      "dominio_estimado": null,
+      "erros": 0,
+      "nome": "Comp B",
+      "status": "desenvolvida",
+      "subject_id": 1,
+      "subject_nome": "Assunto",
+      "taxa_erro": 0.0,
+      "tentativas": 1,
+      "total_questoes": 1
+    }
+  ],
+  "dias_sem_acesso": 0,
+  "estudante": {
+    "curso": "Curso X",
+    "nome": "Ana Souza",
+    "persona": "edubot",
+    "ra": "111",
+    "role": "aluno",
+    "student_id": 1
+  },
+  "features": {
+    "companion": true
+  },
+  "historico_intervencoes": [
+    {
+      "data": "2020-01-01",
+      "descricao": "Foque nos essenciais",
+      "resultado": "pendente",
+      "tipo": "trilha_minima"
+    },
+    {
+      "data": "2020-01-01",
+      "descricao": "Revise por outro caminho",
+      "resultado": "lida",
+      "tipo": "revisao_alternativa"
+    }
+  ],
+  "ovas": [
+    {
+      "completed": true,
+      "last_access": "2020-01-01 12:00:00",
+      "link": "a.html",
+      "ova_id": 1,
+      "ova_name": "OVA 1",
+      "perc_scrolled": 95,
+      "read_time": 120,
+      "recursos": [
+        {
+          "concluido": true,
+          "consumido": true,
+          "media_type": null,
+          "perc_consumido": 95,
+          "resource_id": 1,
+          "segundos_consumidos": 120,
+          "tipo": "texto",
+          "titulo": "Texto A",
+          "url": null
+        },
+        {
+          "concluido": true,
+          "consumido": true,
+          "media_type": null,
+          "perc_consumido": 90,
+          "resource_id": 2,
+          "segundos_consumidos": 90,
+          "tipo": "video",
+          "titulo": "Video A",
+          "url": null
+        },
+        {
+          "concluido": false,
+          "consumido": true,
+          "media_type": null,
+          "perc_consumido": 50,
+          "resource_id": 3,
+          "segundos_consumidos": 100,
+          "tipo": "podcast",
+          "titulo": "Podcast A",
+          "url": null
+        },
+        {
+          "concluido": false,
+          "consumido": false,
+          "media_type": null,
+          "perc_consumido": 0,
+          "resource_id": 4,
+          "segundos_consumidos": 0,
+          "tipo": "atividade",
+          "titulo": "Atividade A",
+          "url": null
+        },
+        {
+          "concluido": true,
+          "consumido": true,
+          "media_type": null,
+          "perc_consumido": 0,
+          "resource_id": 5,
+          "segundos_consumidos": 0,
+          "tipo": "quiz",
+          "titulo": "Quiz A",
+          "url": null
+        }
+      ]
+    },
+    {
+      "completed": false,
+      "last_access": "2020-01-01 12:00:00",
+      "link": "b.html",
+      "ova_id": 2,
+      "ova_name": "OVA 2",
+      "perc_scrolled": 40,
+      "read_time": 30,
+      "recursos": [
+        {
+          "concluido": true,
+          "consumido": true,
+          "media_type": null,
+          "perc_consumido": 100,
+          "resource_id": 6,
+          "segundos_consumidos": 0,
+          "tipo": "video",
+          "titulo": "Video B",
+          "url": null
+        }
+      ]
+    }
+  ],
+  "preferencia_formato": "video",
+  "quiz": {
+    "erros": 2,
+    "taxa_erro": 0.5,
+    "tentativas": 4
+  },
+  "recursos": {
+    "consumidos": 5,
+    "percentual_consumido": 83,
+    "por_tipo": {
+      "atividade": {
+        "concluidos": 0,
+        "consumidos": 0,
+        "total": 1
+      },
+      "podcast": {
+        "concluidos": 0,
+        "consumidos": 1,
+        "total": 1
+      },
+      "quiz": {
+        "concluidos": 1,
+        "consumidos": 1,
+        "total": 1
+      },
+      "texto": {
+        "concluidos": 1,
+        "consumidos": 1,
+        "total": 1
+      },
+      "video": {
+        "concluidos": 2,
+        "consumidos": 2,
+        "total": 2
+      }
+    },
+    "total": 6
+  }
+}

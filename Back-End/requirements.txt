@@ -1,0 +1,10 @@
+flask
+flask-cors
+peewee
+PyMySQL
+cryptography
+# Scheduler in-process da proatividade do EduBot (varredura periódica da turma)
+APScheduler
+# IA real (opcional): SDK da Anthropic + cliente AWS Bedrock. Só é usado quando
+# EDUBOT_LLM_PROVIDER != mock; no modo mock (padrão) fica ocioso.
+anthropic[bedrock]

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA - Cloud Computing Fundamentals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        .carrousel-img { max-width: 100%; }
+        .section-content { opacity: 0; left: -100vw; }
+        @media (min-width: 768px) { .carrousel-img { max-width: 50%; } }
+        @media (min-width: 992px) {
+            section > * { max-width: 50vw; }
+            div, h1 { max-width: 100vw; }
+            .carrousel-img, .carrousel p { width: 50%; }
+            h1, h2, h3, p { font-size: 1.5rem; }
+            .carrousel p, label { font-size: 1.5rem; }
+            #introduction p { max-width: 50%; }
+        }
+        @media (min-width: 1400px) { .main-img, .main-text { width: 50%; } }
+    </style>
+</head>
+<body>
+    <section id="introduction" class="text-light px-4 py-5" style="background-color: #04093b;">
+        <div class="d-flex flex-column justify-content-around align-items-center text-center">
+            <p class="fs-4 pt-5">Cloud Computing Fundamentals</p>
+            <p class="fs-5 pt-5">Hello, student! Your experience is about to begin, and a lot of content is at your disposal! Senai Cimatec offers you a true experience in the study of this subject, allowing you — beyond amazing content about cloud computing — to earn an extra certificate for your résumé! Keep going to learn more!</p>
+        </div>
+    </section>
+
+    <section id="journey">
+        <h1 class="title text-light bg-primary text-center py-5 w-100">What is Cloud Computing</h1>
+        <div class="container p-5 section-content position-relative">
+            <div class="fs-5">
+                <p>Imagine accessing virtually unlimited computing power without having to buy and maintain physical servers. That is the promise of cloud computing: to deliver IT resources — servers, storage, databases, networks and software — on demand, over the internet, paying only for what you use.</p>
+                <div class="d-xxl-flex my-5 justify-content-between align-items-center">
+                    <img src="../../imagens/ia.png" alt="" srcset="" class="w-100 main-img">
+                    <p class="main-text">Instead of buying and operating their own data centers, organizations rent capacity from providers such as AWS, Azure and Google Cloud. This turns high fixed infrastructure costs into variable costs, allowing you to scale up or down as needed — in minutes, not months.</p>
+                </div>
+                <p>Three characteristics define the cloud: <strong>elasticity</strong> (automatic scaling), <strong>on-demand self-service</strong> and <strong>pay-per-use</strong>.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="service-models">
+        <h1 class="title text-light bg-primary text-center py-5">Service Models</h1>
+        <div class="container p-5 section-content position-relative">
+            <div class="fs-5">
+                <p>The cloud is offered in three major service models, which differ in how much the provider manages and how much stays under the customer's responsibility.</p>
+            </div>
+            <div class="carrousel" data-carrousel-name="service-models">
+                <div class="parts border border-4 border-primary rounded-4 px-3 pb-3">
+                    <div class="iaas text-center">
+                        <h2 class="my-4">IaaS — Infrastructure as a Service</h2>
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                            <img src="../../imagens/computer-vision.png" alt="" class="img-fluid rounded-3 mb-4 carrousel-img">
+                            <p class="ms-md-3">The provider delivers the basic infrastructure — virtual machines, networking and storage — while the customer manages the operating system, applications and data. Maximum flexibility. Examples: Amazon EC2, Azure Virtual Machines.</p>
+                        </div>
+                    </div>
+                    <div class="paas text-center">
+                        <h2 class="my-4">PaaS — Platform as a Service</h2>
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                            <img src="../../imagens/machine-learning.png" alt="" class="img-fluid rounded-3 mb-4 carrousel-img">
+                            <p>The provider takes care of the infrastructure and the runtime environment; the developer focuses only on the code. Ideal for shipping applications quickly without managing servers. Examples: Google App Engine, AWS Elastic Beanstalk.</p>
+                        </div>
+                    </div>
+                    <div class="saas text-center">
+                        <h2 class="my-4">SaaS — Software as a Service</h2>
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                            <img src="../../imagens/ia.png" alt="" class="img-fluid rounded-3 mb-4 carrousel-img">
+                            <p>Ready-made software accessed through the browser; the customer just uses the application, without worrying about infrastructure or updates. Examples: Gmail, Google Docs, Salesforce.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="arrows d-flex justify-content-between align-items-center px-3">
+                    <i class="arrow-left bi bi-arrow-left-circle-fill fs-1 text-primary"></i>
+                    <div class="dots d-flex justify-content-between align-items-center">
+                        <i class="bi bi-circle-fill mx-1 text-primary fs-5"></i>
+                        <i class="bi bi-circle mx-1 text-primary"></i>
+                        <i class="bi bi-circle mx-1 text-primary"></i>
+                    </div>
+                    <i class="arrow-right bi bi-arrow-right-circle-fill fs-1 text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="deployment-models">
+        <h1 class="title text-light bg-primary text-center py-5">Deployment Models</h1>
+        <div class="container p-5 section-content position-relative">
+            <div class="fs-5">
+                <p>Beyond HOW the service is delivered, WHERE it runs also matters. The main deployment models are:</p>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Public Cloud
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>The infrastructure belongs to a third-party provider and is shared among several customers over the internet. It offers the greatest elasticity and the lowest upfront cost, but less control over the environment.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Private Cloud
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>The infrastructure is dedicated to a single organization, hosted internally or by a provider. It gives more control, security and compliance — useful for sensitive data — at the cost of lower elasticity and higher investment.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Hybrid Cloud
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>It combines public and private cloud, allowing workloads to move between them. Keep critical data in the private cloud and use the public one for demand spikes, balancing security and elasticity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="benefits-challenges">
+        <h1 class="title text-light bg-primary text-center py-5">Benefits and Challenges</h1>
+        <div class="container p-5 section-content position-relative">
+            <div class="fs-5">
+                <p>The cloud brings significant gains, but it also requires care. Learn about the main points:</p>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Economics: pay for what you use
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>The "pay-as-you-go" model swaps large upfront investments (CapEx) for variable operating costs (OpEx). You pay only for the resources you consume, avoiding idleness and over-provisioning.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Security and shared responsibility
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>In the cloud, the shared responsibility model applies: the provider protects the infrastructure, but the customer is responsible for configuring access, encrypting data and managing identities. Misconfigurations are the leading cause of incidents.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Vendor lock-in
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>Using very provider-specific services can make future migration harder. Good practices such as standardization, containers and multi-cloud architectures help reduce this risk.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="conclusion">
+        <h1 class="title text-light bg-primary text-center py-5">Conclusion</h1>
+        <div class="container p-5 section-content position-relative">
+            <div class="fs-5 border-bottom">
+                <p>Cloud computing has changed the way we build and deliver technology: more agile, more elastic and aligned with real usage. Understanding the service models (IaaS, PaaS, SaaS), the deployment models (public, private, hybrid) and the balance between economics and security is the foundation for any modern IT professional.</p>
+                <p>Below, you will find a quiz with questions about the previous topics. Answer carefully!</p>
+            </div>
+            <div class="questions py-4"></div>
+        </div>
+    </section>
+
+    <section id="resources">
+        <h1 class="title text-light bg-primary text-center py-5">Additional Resources</h1>
+        <div class="container p-5 section-content position-relative">
+            <p class="fs-5">If you want to go deeper into the subject, here are some resources for you. Enjoy!</p>
+        </div>
+    </section>
+</body>
+</html>

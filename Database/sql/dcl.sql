@@ -1,0 +1,3 @@
+-- The MySQL Docker image already creates this user from compose.yaml.
+-- MySQL 8.4 no longer loads mysql_native_password by default, so forcing it here
+-- aborts the entrypoint before the schema scripts run.

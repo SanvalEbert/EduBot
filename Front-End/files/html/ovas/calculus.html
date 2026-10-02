@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA - Rastreamento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        .carrousel-img {
+            max-width: 100%;
+        }
+
+        .section-content {
+            opacity: 0;
+            left: -100vw;
+        }
+
+        @media (min-width: 768px) {
+            .carrousel-img {
+                max-width: 50%;
+            }
+        }
+
+        @media (min-width: 992px) {
+            section > * {
+                max-width: 50vw;
+            }
+
+            div, h1 {
+                max-width: 100vw;
+            }
+
+            .carrousel-img,  .carrousel p {
+                width: 50%;
+            }
+
+            h1, h2, h3, p {
+                font-size: 1.5rem;
+            }
+
+            .carrousel p, label {
+                font-size: 1.5rem;
+            }
+
+            #introduction p {
+                max-width: 50%;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .main-img, .main-text {
+                width: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section id="introduction" class="text-light px-4 py-5" style="background-color: #04093b;">
+        <div class="d-flex flex-column justify-content-around align-items-center text-center">
+            <p class="fs-4 pt-5">Cálculo</p>
+            <p class="fs-5 pt-5">Olá, estudante! Sua experiência iniciará e muito conteúdo estará à sua disposição! O Senai Cimatec proporcionará a você uma verdadeira experiência no estudo dessa temática, possibilitando, além do uso de conteúdos incríveis sobre cálculo, um certificado extra para seu currículo! Prossiga para conhecer mais!</p>
+        </div>
+    </section>
+    <section id="journey">
+        <h1 class="title text-light bg-primary text-center py-5 w-100">A jornada Quântica Começa</h1>
+        <div class="container p-5 section-content position-relative">
+            <div class="fs-5">
+                <p>Imagine um universo onde a informação não se limita a zeros e uns, mas pode existir em múltiplos estados ao mesmo tempo. Esse é o mundo da computação quântica, que utiliza os princípios da mecânica quântica para realizar cálculos complexos inimagináveis para os computadores tradicionais.</p>
+                <div class="d-xxl-flex my-5 justify-content-between align-items-center">
+                    <img src="../../imagens/bit_vs_qubit.png" alt="" srcset="" class="w-100 main-img">
+                    <p class="main-text">Os qubits são a chave para o poder da computação quântica. Eles permitem que os computadores quânticos realizem cálculos em paralelo, exponencialmente mais rápido do que os computadores tradicionais. Para entender melhor, pense em um dado tradicional, como uma moeda. Ela pode estar cara ou coroa. Já um qubit, a unidade básica de informação na computação quântica, pode ser como uma moeda quântica que gira em alta velocidade, representando cara e coroa ao mesmo tempo!</p>
+                </div>
+                <p>Duas propriedades únicas dos qubits são a superposição e o entrelaçamento.</p>
+            </div>
+            <div class="carrousel" data-carrousel-name="qubits-prop">
+                <div class="parts border border-4 border-primary rounded-4 px-3 pb-3">
+                    <div class="superposition text-center">
+                        <h2 class="my-4">Superposição</h2>
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                            <img src="../../imagens/ondas.webp" alt="" class="img-fluid rounded-3 mb-4 carrousel-img">
+                            <p class="ms-md-3">Um qubit pode estar em um estado de 0, 1 ou em uma combinação de ambos simultaneamente. Pense em uma onda: ela pode ser alta, baixa ou uma mistura das duas. Superposição é como a combinação de ondas no mundo quântico.</p>
+                        </div>
+                    </div>
+                    <div class="entanglement text-center">
+                        <h2 class="my-4">Entrelaçamento Quântico</h2>
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                            <img src="../../imagens/entrelaçamento.jpg" alt="" class="img-fluid rounded-3 mb-4 carrousel-img">
+                            <p class="md-ms-3">Imagine duas moedas quânticas especiais. Elas são "entrelaçadas", ou seja, a medição de uma moeda instantaneamente determina o estado da outra, mesmo que estejam distantes, aumentando drasticamente a capacidade de processamento.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="arrows d-flex justify-content-between align-items-center px-3">
+                    <i class="arrow-left bi bi-arrow-left-circle-fill fs-1 text-primary"></i>
+                    <div class="dots d-flex justify-content-between align-items-center">
+                        <i class="bi bi-circle-fill mx-1 text-primary fs-5"></i>
+                        <i class="bi bi-circle mx-1 text-primary"></i>
+                    </div>
+                    <i class="arrow-right bi bi-arrow-right-circle-fill fs-1 text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="applications">
+        <h1 class="title text-light bg-primary text-center py-5">Aplicações da Computação Quântica</h1>
+        <div class="container p-5 section-content position-relative">
+            <div class="fs-5">
+                <p>A computação quântica abre um novo mundo de possibilidades com algoritmos que operam de maneira fundamentalmente diferente dos algoritmos clássicos. Essa diferença fundamental se traduz em uma eficiência incomparável para resolver problemas complexos em diversas áreas</p>
+            </div>
+            <div class="carrousel" data-carrousel-name="applications">
+                <div class="parts border border-4 border-primary rounded-4 px-3 pb-3">
+                    <div class="criptography text-center">
+                        <h2 class="my-4">Criptografia</h2>
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                            <img src="../../imagens/criptografia-quântica.jpg" alt="" class="img-fluid rounded-3 mb-4 carrousel-img">
+                            <p>O algoritmo de Shor revoluciona a criptografia moderna, quebrando facilmente a segurança de sistemas como RSA e ECC, com implicações profundas para a segurança cibernética e o comércio eletrônico.</p>
+                        </div>
+                    </div>
+                    <div class="simulation text-center">
+                        <h2 class="my-4">Simulações Quânticas</h2>
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                            <img src="../../imagens/remedios_materiais.jpeg" alt="" class="img-fluid rounded-3 mb-4 carrousel-img">
+                            <p>Abordar problemas físicos e químicos complexos, como o desenvolvimento de novos medicamentos e materiais, torna-se possível com simulações quânticas que replicam o comportamento de moléculas e sistemas atômicos com precisão sem precedentes.</p>
+                        </div>
+                    </div>
+                    <div class="optimization text-center">
+                        <h2 class="my-4">Otimização</h2>
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                            <img src="../../imagens/carteira.jpeg" alt="" class="img-fluid rounded-3 mb-4 carrousel-img">
+                            <p>A otimização de rotas, carteiras de investimento, cadeias de suprimentos e outros problemas de grande escala encontra na computação quântica uma ferramenta poderosa para encontrar soluções mais eficientes e lucrativas.</p>
+                        </div>
+                    </div>
+                    <div class="optimization text-center">
+                        <h2 class="my-4">Aprendizado de Máquina</h2>
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                            <img src="../../imagens/ia.png" alt="" class="img-fluid rounded-3 mb-4 carrousel-img">
+                            <p>O desenvolvimento de sistemas de inteligência artificial mais inteligentes e autônomos é impulsionado por algoritmos quânticos que aceleram o aprendizado de máquina e a análise de dados fazendo uso da propriedade da superposição.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="arrows d-flex justify-content-between align-items-center px-3">
+                    <i class="arrow-left bi bi-arrow-left-circle-fill fs-1 text-primary"></i>
+                    <div class="dots d-flex justify-content-between align-items-center">
+                        <i class="bi bi-circle-fill mx-1 text-primary fs-5"></i>
+                        <i class="bi bi-circle mx-1 text-primary"></i>
+                        <i class="bi bi-circle mx-1 text-primary"></i>
+                        <i class="bi bi-circle mx-1 text-primary"></i>
+                    </div>
+                    <i class="arrow-right bi bi-arrow-right-circle-fill fs-1 text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="differences">
+        <h1 class="title text-light bg-primary text-center py-5">Diferenças da Computação Tradicional</h1>
+        <div class="container p-5 section-content position-relative">
+            <div class="fs-5">
+                <div class="accordion">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          Linguagem de Programação
+                        </button>
+                      </h2>
+                      <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <p>A computação quântica não tem um código próprio para programação e utiliza o desenvolvimento e implementação de algoritmos muito específicos. Porém, a informática tradicional possui linguagens padronizadas como Java, SQL ou Python, entre muitas outras.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          Funcionalidade
+                        </button>
+                      </h2>
+                      <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <p>Um computador quântico não é uma ferramenta para uso popular ou cotidiano, como um computador pessoal (PC). Estes supercomputadores são tão complexos que só têm cabida no âmbito corporativo, científico e tecnológico.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                          Arquitetura
+                        </button>
+                      </h2>
+                      <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <p>A composição de um computador quântico é mais simples que a de um convencional e não tem memória nem processador. Estes equipamentos se limitam a um conjunto de qubits que servem de base para seu funcionamento.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </section>
+    <section id="challenges">
+        <h1 class="title text-light bg-primary text-center py-5">Desafios da Computação Quântica</h1>
+        <div class="container p-5 section-content position-relative">
+            <div class="fs-5">
+                <p>A computação quântica, apesar de seu enorme potencial, ainda enfrenta diversos desafios técnicos que precisam ser superados para alcançar seu pleno potencial. Entre os principais obstáculos, podemos destacar:</p>
+                <div class="accordion">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          Decoerência
+                        </button>
+                      </h2>
+                      <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <p>A decoerência é a perda de informação quântica devido à interação com o ambiente, visto que a mesma limita o tempo que os qubits podem manter a superposição, crucial para cálculos complexos.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          Erros Quânticos
+                        </button>
+                      </h2>
+                      <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <p>Erros quânticos são falhas que podem ocorrer em cálculos quânticos, como a mudança de estado de um qubit ou a perda de superposição. Podem ser causados por ruído térmico, até pela própria decoerência. Os erros quânticos podem levar à falha completa de um cálculo ou a resultados incorretos.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                          Refrigeração
+                        </button>
+                      </h2>
+                      <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <p>Para manter os qubits em um estado de superposição, é necessário refrigerá-los a temperaturas próximas do zero absoluto, o que torna essa refrigeração complexa e cara, representando um desafio para a viabilidade da computação quântica em larga escala.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </section>
+    <section id="conclusion">
+        <h1 class="title text-light bg-primary text-center py-5">Conclusão</h1>
+        <div class="container p-5 section-content position-relative">
+            <div class="fs-5 border-bottom">
+                <p>O futuro da computação quântica é promissor, mas ainda há muito trabalho a ser feito. Com um investimento contínuo e uma colaboração global, podemos tornar essa tecnologia uma realidade e colher seus benefícios para toda a humanidade.</p>
+                <p>Abaixo, você irá encontrar um questionário com perguntas sobre os tópicos anteriores. Responda com atenção!</p>
+            </div>
+            <div class="questions py-4"></div>
+        </div>
+    </section>
+    <section id="resources">
+        <h1 class="title text-light bg-primary text-center py-5">Recursos Adicionais</h1>
+        <div class="container p-5 section-content position-relative">
+            <!-- MELHORIA (4.1): os players de vídeo/podcast e as atividades práticas
+                 desta seção são renderizados dinamicamente pelo ova.js a partir da
+                 tabela "resources" (URL + tipo de mídia vindos do banco), usando os
+                 componentes js/components/video-player.js e audio-player.js.
+                 Os iframes do YouTube hardcoded foram removidos — nos OVAs de
+                 Cálculo eles eram, inclusive, os vídeos de Computação Quântica
+                 copiados por engano. -->
+            <p class="fs-5">Caso queira se aprofundar no assunto, aqui estão alguns recursos para você. Aproveite!</p>
+        </div>
+    </section>
+</body>
+</html>

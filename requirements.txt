@@ -1,0 +1,4 @@
+flask
+flask_cors
+peewee
+psycopg2-binary

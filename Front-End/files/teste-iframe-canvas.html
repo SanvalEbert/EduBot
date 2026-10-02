@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bancada de teste — o rastreio dentro de um iframe</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #fff; --texto: #1c1f24; --suave: #5b636e;
+    --linha: #dfe3e8; --ok: #0a7c42; --alerta: #b3541e; --erro: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.55 system-ui, -apple-system, Segoe UI, sans-serif;
+         background: var(--bg); color: var(--texto); }
+  header { background: var(--card); border-bottom: 1px solid var(--linha); padding: 20px 24px; }
+  h1 { margin: 0 0 6px; font-size: 20px; }
+  header p { margin: 0; color: var(--suave); max-width: 80ch; }
+  main { padding: 24px; max-width: 1100px; margin: 0 auto; }
+  .painel { background: var(--card); border: 1px solid var(--linha); border-radius: 10px;
+            padding: 18px 20px; margin-bottom: 20px; }
+  .painel h2 { margin: 0 0 4px; font-size: 16px; }
+  .painel .sub { color: var(--suave); margin: 0 0 14px; font-size: 14px; }
+  label { display: inline-flex; align-items: center; gap: 7px; margin-right: 20px;
+          font-size: 14px; cursor: pointer; }
+  input[type="url"] { width: 340px; padding: 7px 9px; border: 1px solid var(--linha);
+                      border-radius: 6px; font: inherit; }
+  button { padding: 8px 15px; border: 1px solid var(--linha); background: #fff;
+           border-radius: 6px; font: inherit; cursor: pointer; }
+  button:hover { background: #f0f2f5; }
+  iframe { width: 100%; border: 2px solid var(--linha); border-radius: 8px;
+           background: #fff; display: block; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--linha);
+           vertical-align: top; }
+  th { color: var(--suave); font-weight: 600; }
+  td.n { font-variant-numeric: tabular-nums; font-family: ui-monospace, Consolas, monospace; }
+  .ok { color: var(--ok); font-weight: 600; }
+  .alerta { color: var(--alerta); font-weight: 600; }
+  .erro { color: var(--erro); font-weight: 600; }
+  .veredito { padding: 12px 14px; border-radius: 8px; margin-top: 14px; font-size: 14px; }
+  .veredito.bom { background: #e8f5ee; border: 1px solid #b7dfc8; }
+  .veredito.ruim { background: #fdeceb; border: 1px solid #f3c6c2; }
+  .espaco { height: 1600px; background: repeating-linear-gradient(
+      180deg, transparent, transparent 79px, #e7eaee 79px, #e7eaee 80px); }
+  .espaco p { padding: 16px 24px; color: var(--suave); margin: 0; }
+  code { background: #eef0f3; padding: 1px 5px; border-radius: 4px;
+         font-family: ui-monospace, Consolas, monospace; font-size: 0.92em; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Bancada de teste — o rastreio dentro de um iframe</h1>
+  <p>
+    Reproduz o enquadramento do Canvas <strong>sem precisar do Canvas</strong>. Todos os
+    riscos previstos em <code>RASTREIO_DENTRO_DO_CANVAS.md</code> §3–§5 são comportamento de
+    iframe, não de LMS — então dá para medi-los aqui e converter previsão em fato.
+  </p>
+</header>
+
+<main>
+
+<div class="painel">
+  <h2>Configuração</h2>
+  <p class="sub">
+    Aponte para o leitor de OVA já autenticado. Abra o app normalmente, faça login, e cole a URL.
+  </p>
+  <p>
+    <input type="url" id="url" value="http://localhost:8010/app/">
+    <button id="carregar">Carregar nos dois quadros</button>
+  </p>
+  <p style="margin-bottom:0">
+    <label><input type="checkbox" id="autoResize" checked>
+      Quadro B imita <code>lti.frameResize</code> (cresce até a altura do conteúdo)</label>
+  </p>
+</div>
+
+<!-- ------------------------------------------------------------------ -->
+<div class="painel">
+  <h2>Leitura das duas geometrias</h2>
+  <p class="sub">
+    A mesma página, nos dois enquadramentos. A diferença entre as colunas é a causa
+    inteira da §3.
+  </p>
+  <table>
+    <thead>
+      <tr><th style="width:42%">Medida</th>
+          <th style="width:29%">A — altura fixa (recomendado)</th>
+          <th style="width:29%">B — auto-dimensionado</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>window.innerHeight</code> interno</td>
+          <td class="n" id="a-inner">—</td><td class="n" id="b-inner">—</td></tr>
+      <tr><td><code>documentElement.scrollHeight</code></td>
+          <td class="n" id="a-scroll">—</td><td class="n" id="b-scroll">—</td></tr>
+      <tr><td><code>contentScrollable()</code><br>
+              <span style="color:var(--suave)">scrollHeight &gt; innerHeight + 8</span></td>
+          <td class="n" id="a-rolavel">—</td><td class="n" id="b-rolavel">—</td></tr>
+      <tr><td>Gate de conclusão que passa a valer</td>
+          <td id="a-gate">—</td><td id="b-gate">—</td></tr>
+    </tbody>
+  </table>
+  <div id="veredito" class="veredito bom">Carregue os quadros para medir.</div>
+</div>
+
+<!-- ------------------------------------------------------------------ -->
+<div class="painel">
+  <h2>Quadro A — altura fixa, rolagem interna</h2>
+  <p class="sub">
+    É a configuração recomendada. O conteúdo rola <em>por dentro</em>, então
+    <code>window.innerHeight</code> continua sendo uma janela de verdade e todo o cálculo
+    de leitura funciona sem mudar uma linha.
+  </p>
+  <iframe id="frameA" src="about:blank" height="620"></iframe>
+</div>
+
+<div class="painel">
+  <h2>Quadro B — auto-dimensionado (o que <code>lti.frameResize</code> faz)</h2>
+  <p class="sub">
+    O iframe cresce até a altura total do conteúdo e a barra de rolagem interna some.
+    É confortável visualmente — e é o que destrói a medição.
+  </p>
+  <iframe id="frameB" src="about:blank" height="620"></iframe>
+</div>
+
+<!-- ------------------------------------------------------------------ -->
+<div class="painel">
+  <h2>Roteiro de verificação</h2>
+  <ol style="margin:0; padding-left:20px">
+    <li><strong>§3 — conclusão falsa.</strong> Abra um OVA longo nos dois quadros, leia
+      20 segundos em cada um sem rolar nada e consulte o progresso:<br>
+      <code>curl -H "X-API-Key: SUA_CHAVE" "http://localhost:5010/api/v1/tracking/progress"</code><br>
+      No quadro B espere <code>completed: true</code> com <code>perc_scrolled: 100</code>.
+      No quadro A, não.</li>
+    <li><strong>§4 — storage bloqueado.</strong> Desative cookies de terceiros no navegador e
+      sirva esta página de <em>outra origem</em> (veja abaixo). O app deve continuar
+      abrindo e rastreando. Antes da correção de <code>services/storage.ts</code>, ele
+      quebrava na montagem.</li>
+    <li><strong>§5 — ociosidade surda.</strong> Role <em>a página de fora</em> por 3 minutos sem
+      tocar no iframe e verifique se apareceu <code>idle_start</code>:<br>
+      <code>curl -H "X-API-Key: SUA_CHAVE" "http://localhost:5010/api/v1/tracking/events?verb=idle_start"</code></li>
+    <li><strong>§2.1 — iframe escondido por CSS.</strong> No console:
+      <code>frameA.style.display='none'</code> e veja se o tempo continua correndo.</li>
+  </ol>
+  <p style="margin-bottom:0; color:var(--suave); font-size:14px">
+    Para o teste cross-origin de verdade (item 2), sirva esta página de outra porta —
+    por exemplo <code>python -m http.server 9000</code> nesta pasta e abra
+    <code>http://localhost:9000/teste-iframe-canvas.html</code>. A instrumentação da
+    tabela acima deixa de funcionar (é o próprio isolamento agindo), mas o teste de
+    storage passa a valer.
+  </p>
+</div>
+
+<div class="painel" style="padding:0; overflow:hidden">
+  <div class="espaco">
+    <p><strong>Espaço para rolar a página de fora.</strong> Usado no item 3 do roteiro:
+      role daqui até o fim, sem tocar no iframe, e veja se o rastreio marca ociosidade
+      indevidamente.</p>
+  </div>
+</div>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var frameA = document.getElementById("frameA");
+  var frameB = document.getElementById("frameB");
+  var ALTURA_FIXA = 620;
+
+  function texto(id, valor, classe) {
+    var el = document.getElementById(id);
+    el.textContent = valor;
+    el.className = (id.indexOf("inner") > 0 || id.indexOf("scroll") > 0 ||
+                    id.indexOf("rolavel") > 0) ? "n " + (classe || "") : (classe || "");
+  }
+
+  // Só funciona com a bancada na MESMA origem do app. Cross-origin lança —
+  // e esse lançamento é, ele próprio, a confirmação de que o isolamento existe.
+  function medir(frame) {
+    try {
+      var w = frame.contentWindow;
+      var d = w.document;
+      if (!d || !d.documentElement) return null;
+      return {
+        innerHeight: w.innerHeight,
+        scrollHeight: d.documentElement.scrollHeight
+      };
+    } catch (e) {
+      return "cross-origin";
+    }
+  }
+
+  function aplicar(medida, prefixo) {
+    if (medida === "cross-origin") {
+      texto(prefixo + "-inner", "bloqueado", "alerta");
+      texto(prefixo + "-scroll", "bloqueado", "alerta");
+      texto(prefixo + "-rolavel", "—");
+      texto(prefixo + "-gate", "não inspecionável de outra origem", "alerta");
+      return null;
+    }
+    if (!medida) {
+      texto(prefixo + "-inner", "—"); texto(prefixo + "-scroll", "—");
+      texto(prefixo + "-rolavel", "—"); texto(prefixo + "-gate", "—");
+      return null;
+    }
+    var rolavel = medida.scrollHeight > medida.innerHeight + 8;
+    texto(prefixo + "-inner", medida.innerHeight + " px");
+    texto(prefixo + "-scroll", medida.scrollHeight + " px");
+    texto(prefixo + "-rolavel", rolavel ? "true" : "false", rolavel ? "ok" : "erro");
+    texto(prefixo + "-gate",
+          rolavel ? "scroll ≥ 90% (correto)" : "20 s de tempo ativo (FALSO)",
+          rolavel ? "ok" : "erro");
+    return rolavel;
+  }
+
+  function vereditar(a, b) {
+    var box = document.getElementById("veredito");
+    if (a === null && b === null) {
+      box.className = "veredito bom";
+      box.textContent = "Carregue os quadros para medir.";
+      return;
+    }
+    if (a === true && b === false) {
+      box.className = "veredito ruim";
+      box.innerHTML = "<strong>Reproduzido.</strong> No quadro A o gate correto está valendo " +
+        "(scroll ≥ 90%). No quadro B o conteúdo deixou de ser rolável, então o gate caiu " +
+        "para tempo: <strong>o OVA será marcado como concluído após 20 segundos</strong>, " +
+        "com perc_scrolled em 100%. É exatamente a §3 — e não gera um único erro no console.";
+    } else if (a === true && b === true) {
+      box.className = "veredito bom";
+      box.innerHTML = "Os dois quadros ainda têm conteúdo rolável. Para reproduzir a §3, " +
+        "use um OVA mais longo ou confirme que o quadro B cresceu até a altura total.";
+    } else {
+      box.className = "veredito ruim";
+      box.innerHTML = "O quadro A não está rolável — a altura fixa está maior que o " +
+        "conteúdo. Reduza a altura do quadro A ou abra um OVA mais longo, senão o " +
+        "teste mede a situação errada.";
+    }
+  }
+
+  function atualizar() {
+    var a = aplicar(medir(frameA), "a");
+    var b = aplicar(medir(frameB), "b");
+
+    // Imita lti.frameResize: cresce o quadro B até a altura do conteúdo.
+    if (document.getElementById("autoResize").checked) {
+      var m = medir(frameB);
+      if (m && m !== "cross-origin" && m.scrollHeight > 0) {
+        var alvo = Math.max(450, m.scrollHeight);  // 450 px é o piso do Canvas
+        if (Math.abs(frameB.offsetHeight - alvo) > 4) frameB.height = alvo;
+      }
+    } else if (frameB.offsetHeight !== ALTURA_FIXA) {
+      frameB.height = ALTURA_FIXA;
+    }
+    vereditar(a, b);
+  }
+
+  document.getElementById("carregar").addEventListener("click", function () {
+    var url = document.getElementById("url").value;
+    frameA.src = url;
+    frameB.src = url;
+  });
+
+  document.getElementById("autoResize").addEventListener("change", atualizar);
+  setInterval(atualizar, 1000);
+})();
+</script>
+
+</body>
+</html>
