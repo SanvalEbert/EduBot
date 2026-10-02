@@ -1,0 +1,65 @@
+name: Import EduBot package
+
+on:
+  push:
+    paths:
+      - '.github/workflows/import-edubot.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Clone public source repository
+        run: git clone --depth 1 https://github.com/VictorBarretoAndrade/EduBot.git /tmp/source
+
+      - name: Copy files that exactly match the uploaded package
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .import/manifest-1.sha256 .import/manifest-2.sha256 .import/manifest-3.sha256 > /tmp/manifest.sha256
+          matched=0
+          unmatched=0
+          while IFS= read -r line; do
+            expected="${line%%  *}"
+            path="${line#*  }"
+            src="/tmp/source/$path"
+            if [ -f "$src" ]; then
+              actual="$(sha256sum "$src" | awk '{print $1}')"
+            else
+              actual="MISSING"
+            fi
+            if [ "$actual" = "$expected" ]; then
+              mkdir -p "$(dirname "$path")"
+              cp -p "$src" "$path"
+              matched=$((matched + 1))
+            else
+              echo "UNMATCHED: $path expected=$expected actual=$actual"
+              unmatched=$((unmatched + 1))
+            fi
+          done < /tmp/manifest.sha256
+          echo "MATCHED_COUNT=$matched"
+          echo "UNMATCHED_COUNT=$unmatched"
+
+      - name: Remove temporary import helpers
+        run: rm -rf .import .github/workflows/import-edubot.yml
+
+      - name: Commit imported project
+        shell: bash
+        run: |
+          git config user.name "SanvalEbert"
+          git config user.email "115511942+SanvalEbert@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+            exit 0
+          fi
+          git commit -m "Import EduBot project files"
+          git push origin main
